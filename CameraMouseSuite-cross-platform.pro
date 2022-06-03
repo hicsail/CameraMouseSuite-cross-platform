@@ -36,7 +36,7 @@ unix {
         PKGCONFIG += x11
     }
 
-    PKGCONFIG += opencv
+    PKGCONFIG += opencv4
 }
 
 mac {

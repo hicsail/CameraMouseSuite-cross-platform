@@ -18,7 +18,7 @@
 #ifndef CMS_IMAGEPROCESSING_H
 #define CMS_IMAGEPROCESSING_H
 
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 
 namespace CMS {
 

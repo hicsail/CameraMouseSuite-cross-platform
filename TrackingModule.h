@@ -18,7 +18,7 @@
 #ifndef CMS_TRACKINGMODULE_H
 #define CMS_TRACKINGMODULE_H
 
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 
 #include "Point.h"
 

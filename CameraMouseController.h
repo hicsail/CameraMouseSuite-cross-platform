@@ -18,7 +18,7 @@
 #ifndef CMS_CAMERAMOUSECONTROLLER_H
 #define CMS_CAMERAMOUSECONTROLLER_H
 
-#include <cv.h>
+#include <opencv2/opencv.hpp>
 #include <QTime>
 
 #include "FeatureInitializationModule.h"

@@ -18,7 +18,7 @@
 #ifndef CMS_STANDARDTRACKINGMODULE_H
 #define CMS_STANDARDTRACKINGMODULE_H
 
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include <vector>
 
 #include "Point.h"
