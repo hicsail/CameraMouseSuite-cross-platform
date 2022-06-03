@@ -167,7 +167,7 @@ cv::Point TemplateTrackingModule::match(cv::Mat &frame, cv::Mat &tmpl, cv::Size 
     cv::Mat result(resultRows, resultCols, CV_32FC1);
 
     // Do the Matching and Normalize
-    int match_method = CV_TM_SQDIFF;
+    int match_method = cv::TM_SQDIFF;
     cv::matchTemplate(searchRegion, tmpl, result, match_method);
     cv::normalize(result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
 
@@ -180,7 +180,8 @@ cv::Point TemplateTrackingModule::match(cv::Mat &frame, cv::Mat &tmpl, cv::Size 
 
     cv::minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
     // For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
-    if( match_method  == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED )
+
+    if( match_method  == cv::TM_SQDIFF || match_method == cv::TM_SQDIFF_NORMED ) /* These were CV_TM_SQDIFF AND CV_TM_SQDIFF_NORMED, respectively*/
     {
         matchLoc = minLoc;
     }
