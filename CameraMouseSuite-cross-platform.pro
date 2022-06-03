@@ -25,7 +25,7 @@ TEMPLATE = app
 
 unix {
     QT_CONFIG -= no-pkg-config
-    CONFIG += c++11 link_pkgconfig
+    CONFIG += c++14 link_pkgconfig
     LIBS += -L/usr/local/lib
 
     mac {
