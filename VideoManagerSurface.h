@@ -22,7 +22,7 @@
 #include <QLabel>
 #include <QVideoFrame>
 #include <QAbstractVideoSurface>
-#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include "TrackingModule.h"
 #include "MouseControlModule.h"
