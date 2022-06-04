@@ -148,7 +148,7 @@ void WindowsMouse::click()
 
 void MacMouse::move(double x, double y)
 {
-    CGEventRef move = CGEventCreateMouseEvent(NULL, NX_MOUSEMOVED, CGPointMake(x, y), kCGMouseButtonLeft);
+    CGEventRef move = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, CGPointMake(x, y), kCGMouseButtonLeft);
     CGEventPost(kCGHIDEventTap, move);
 }
 
