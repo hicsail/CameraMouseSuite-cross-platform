@@ -45,6 +45,9 @@ mac {
             -framework Foundation
 
     OBJECTIVE_SOURCES += MacKeyboard.mm
+
+    QMAKE_INFO_PLIST = Info.plist
+
 }
 
 win32 {
