@@ -134,7 +134,7 @@ cv::Rect FeatureInitializationModule::detectNose(cv::Mat &face)
 
 struct CompareRect
 {
-    bool operator() (const cv::Rect &r1, const cv::Rect &r2) {
+    bool operator() (const cv::Rect &r1, const cv::Rect &r2) const {
         if (r1.x == r2.x)
         {
             if (r1.y == r2.y)
