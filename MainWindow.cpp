@@ -172,4 +172,10 @@ void MainWindow::lockGainClicked(bool lock)
         ui->verticalGainSlider->setValue(ui->horizontalGainSlider->value());
 }
 
-} // namespace CMS
+
+
+
+
+}
+
+// namespace CMS

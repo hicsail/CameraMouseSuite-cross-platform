@@ -56,6 +56,7 @@ private:
 
     void setupCameraWidgets();
     void setupSettingsWidgets();
+    //void resizeEvent(QResizeEvent* event) override;
 };
 
 } // namespace CMS
