@@ -48,6 +48,10 @@ private slots:
     void verticalGainChanged(int verticalGain);
     void lockGainClicked(bool lock);
 
+    void on_resetButton_clicked();
+
+    void updateResetButton();
+
 private:
     Ui::MainWindow *ui;
     QCamera *camera;

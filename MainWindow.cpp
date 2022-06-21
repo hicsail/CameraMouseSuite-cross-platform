@@ -17,6 +17,7 @@
 
 #include <QCameraInfo>
 #include <QMessageBox>
+#include <QTimer>
 
 #include "MainWindow.h"
 #include "ui_mainWindow.h"
@@ -24,6 +25,7 @@
 #include "CameraMouseController.h"
 #include "TemplateTrackingModule.h"
 #include "MouseControlModule.h"
+
 
 Q_DECLARE_METATYPE(QCameraInfo)
 
@@ -172,6 +174,23 @@ void MainWindow::lockGainClicked(bool lock)
         ui->verticalGainSlider->setValue(ui->horizontalGainSlider->value());
 }
 
+
+void MainWindow::on_resetButton_clicked()
+{
+    //QTimer *timer =  new QTimer(this);
+    //connect(timer, SIGNAL(timeout()), this, SLOT(updateResetButton()));
+    //timer->start(5000);
+
+    QTimer::singleShot(5000,this,SLOT(updateResetButton()));
+}
+
+void MainWindow::updateResetButton()
+{
+    ui->resetButton->setText("5 seconds have passed!");
+    //qDebug() << "5 seconds have passed!";
+
+    // Just call CameraMouseController::processClick()?
+}
 
 
 

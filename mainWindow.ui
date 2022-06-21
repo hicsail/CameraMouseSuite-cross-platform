@@ -33,7 +33,7 @@
        <attribute name="title">
         <string>Camera</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="CMS::ClickableLabel" name="frameLabel">
           <property name="sizePolicy">
@@ -53,6 +53,13 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="resetButton">
+          <property name="text">
+           <string>Reset</string>
           </property>
          </widget>
         </item>
