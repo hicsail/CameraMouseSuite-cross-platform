@@ -52,17 +52,15 @@ mac {
 
 win32 {
     INCLUDEPATH += $$(OPENCV_INCLUDE) \
-                   $$(OPENCV_INCLUDE)/opencv
+                   $$(OPENCV_INCLUDE)/opencv2
     CONFIG(debug, debug|release) {
-        LIBS += $$(OPENCV_DIR)/lib/*d.lib
+        LIBS += $$(OPENCV_DIR)/lib/*d.lib \
+            -luser32
         message(Debug configuration!)
     }
     CONFIG(release, debug|release) {
-        LIBS += -L$$(OPENCV_DIR)/lib/ \
-                -lopencv_core2411 \
-                -lopencv_imgproc2411 \
-                -lopencv_objdetect2411 \
-                -lopencv_video2411
+        LIBS += -L$$(OPENCV_DIR)/lib/*.lib \
+               -luser32
         message(Release configuration!)
     }
 }
