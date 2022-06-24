@@ -18,6 +18,7 @@
 #include <QCameraInfo>
 #include <QMessageBox>
 #include <QTimer>
+#include <QKeyEvent>
 
 #include "MainWindow.h"
 #include "ui_mainWindow.h"
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(tr("CameraMouseSuite"));
     setupCameraWidgets();
     setupSettingsWidgets();
+
 }
 
 MainWindow::~MainWindow()
@@ -181,20 +183,44 @@ void MainWindow::on_resetButton_clicked()
     //connect(timer, SIGNAL(timeout()), this, SLOT(updateResetButton()));
     //timer->start(5000);
 
-    QTimer::singleShot(5000,this,SLOT(updateResetButton()));
+    // QTimer::singleShot(5000,this,SLOT(updateResetButton()));
+    updateResetButton();
 }
+
 
 void MainWindow::updateResetButton()
 {
-    ui->resetButton->setText("5 seconds have passed!");
-    //qDebug() << "5 seconds have passed!";
+    /* Below code is just for testing of the signal-slot connection and the timer */
+    QString resetTime = ui->resetTime->text();
+    QString resetUnit = ui->resetTimeUnit->currentText();
+    ui->resetButton->setText("5-4-3-2-1 choices: " + resetTime + " " + resetUnit);
 
-    // Just call CameraMouseController::processClick()?
+    // Just call CameraMouseController::processClick() and supply the middle of the frame?
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_F5) {
+        if  (ui->resetCheckF5->isChecked()) {
+            // Call processClick and supply the center of the image
+        }
+
+    }
+}
+
+
+void MainWindow::on_resetCheckTime_stateChanged(int arg1)
+{
+    if (arg1 > 0) {
+            QTimer *timer = new QTimer(this);
+            connect(timer, SIGNAL(timeout()), this, SLOT(updateResetButton()));
+            timer->start(2000);
+    }
 }
 
 
 
 
 }
+
 
 // namespace CMS

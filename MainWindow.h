@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    int num = 0;
 
 private slots:
     void updateSelectedCamera(QAction *action);
@@ -47,10 +48,9 @@ private slots:
     void horizontalGainChanged(int horizontalGain);
     void verticalGainChanged(int verticalGain);
     void lockGainClicked(bool lock);
-
     void on_resetButton_clicked();
-
     void updateResetButton();
+    void on_resetCheckTime_stateChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -61,6 +61,7 @@ private:
     void setupCameraWidgets();
     void setupSettingsWidgets();
     //void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent *event);
 };
 
 } // namespace CMS
