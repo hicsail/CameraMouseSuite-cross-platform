@@ -29,7 +29,7 @@ unix {
     LIBS += -L/usr/local/lib
 
     mac {
-      PKG_CONFIG = /usr/local/bin/pkg-config
+     PKG_CONFIG += /usr/local/bin/pkg-config
     }
 
     linux {
@@ -47,6 +47,9 @@ mac {
     OBJECTIVE_SOURCES += MacKeyboard.mm
 
     QMAKE_INFO_PLIST = Info.plist
+    QMAKE_POST_LINK += plutil -replace NSCameraUsageDescription -string \"CameraMouseSuite needs access to the camera for video input.\" $${TARGET}.app/Contents/Info.plist
+    #QMAKE_INFO_PLIST +=  $${TARGET}/Info.plist
+    #QMAKE_POST_LINK += sed -i -e "s/@VERSION@/$$VERSION/g" "./$${TARGET}.app/Contents/Info.plist";
 
 }
 
