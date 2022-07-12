@@ -65,11 +65,9 @@ void CameraMouseController::processFrame(cv::Mat &frame)
                     featureCheckTimer.restart();
                 }
             } else if (featurePosition.X() >= 1828 || featurePosition.X() <= 90) { // Track point is too far to the left or the right. Chosen X coordinates are arbitrary
-                std::cout << "Trackpoint Lost" << std::endl;
                 startAutoResetInterval();
             }
 
-            std::cout << featurePosition.X() << " " << featurePosition.Y() << std::endl;
             trackingModule->drawOnFrame(frame, featurePosition);
 
             controlModule->update(featurePosition);
@@ -89,6 +87,7 @@ void CameraMouseController::processFrame(cv::Mat &frame)
                 drawCountdown();
                 drawSecondsText();
             }
+
         }
 }
 
@@ -108,7 +107,6 @@ bool CameraMouseController::isAutoDetectWorking()
 
 
 void CameraMouseController::keyPress() {
-    std::cout << "F5 pressed in controller" << "\n";
     if  (settings.isResetOnF5Enabled() || settings.isShowResetButtonEnabled() || settings.isAutoResetTimerEnabled()) {
 
         connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
@@ -120,8 +118,6 @@ void CameraMouseController::keyPress() {
 }
 
 void CameraMouseController::resetCountdown() {
-
-        qDebug() << (time->second());
 
         if (time->second() > 1) {
             *time = time->addSecs(-1);
@@ -176,11 +172,13 @@ void CameraMouseController::resetInterval(int interval) {
 
 void CameraMouseController::startAutoResetInterval() {
       trackingModule->stopTracking();
+      connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
+      timer->start(1000);
+
       if (autoResetTimer->isActive()) {
           autoResetTimer->stop();
       }
-      connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
-      timer->start(1000);
+
 
 }
 

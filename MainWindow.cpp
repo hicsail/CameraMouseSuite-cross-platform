@@ -133,7 +133,7 @@ void MainWindow::setupSettingsWidgets()
     connect(ui->resetCheckTime, SIGNAL(toggled(bool)), &settings, SLOT(setAutoResetTimer(bool)));
 
     // Auto reset on trackpoint loss
-    connect(ui->trackpointLossCheck, SIGNAL(toggled(bool)), &settings, SLOT(setTrackPointLossReset(bool state)));
+    connect(ui->trackpointLossCheck, SIGNAL(toggled(bool)), &settings, SLOT(setTrackPointLossReset(bool)));
 
 
 }
