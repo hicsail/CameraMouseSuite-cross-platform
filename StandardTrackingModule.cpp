@@ -60,6 +60,7 @@ Point StandardTrackingModule::track(cv::Mat &frame)
     prevGrey = grey;
     prevTrackPoints = currentTrackPoints;
 
+
     return imagePoint;
 }
 
@@ -90,5 +91,11 @@ bool StandardTrackingModule::isInitialized()
 {
     return initialized;
 }
+
+void StandardTrackingModule::stopTracking()
+{
+    initialized = false;
+}
+
 
 } // namespace CMS

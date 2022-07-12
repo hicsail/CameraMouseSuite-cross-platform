@@ -15,12 +15,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "qdebug.h"
 #include <QObject>
 #ifdef Q_OS_LINUX
 #include <opencv2/imgproc.hpp>
 #endif
 
 #include "CameraMouseController.h"
+#include "ImageProcessing.h"
+#include <QKeyEvent>
 
 namespace CMS {
 
@@ -61,8 +64,14 @@ void CameraMouseController::processFrame(cv::Mat &frame)
                     }
                     featureCheckTimer.restart();
                 }
+            } else if (featurePosition.X() >= 1828 || featurePosition.X() <= 90) { // Track point is too far to the left or the right. Chosen X coordinates are arbitrary
+                std::cout << "Trackpoint Lost" << std::endl;
+                startAutoResetInterval();
             }
+
+            std::cout << featurePosition.X() << " " << featurePosition.Y() << std::endl;
             trackingModule->drawOnFrame(frame, featurePosition);
+
             controlModule->update(featurePosition);
         }
     }
@@ -75,7 +84,12 @@ void CameraMouseController::processFrame(cv::Mat &frame)
             controlModule->setScreenReference(settings.getScreenResolution()/2);
             controlModule->restart();
         }
-    }
+    } else if (settings.isResetOnF5Enabled() || settings.isShowResetButtonEnabled() || settings.isAutoResetTimerEnabled() || settings.isTrackPointLossResetEnabled()) {
+            if (timer->isActive()) {
+                drawCountdown();
+                drawSecondsText();
+            }
+        }
 }
 
 void CameraMouseController::processClick(Point position)
@@ -91,6 +105,85 @@ bool CameraMouseController::isAutoDetectWorking()
 {
     return initializationModule.allFilesLoaded();
 }
+
+
+void CameraMouseController::keyPress() {
+    std::cout << "F5 pressed in controller" << "\n";
+    if  (settings.isResetOnF5Enabled() || settings.isShowResetButtonEnabled() || settings.isAutoResetTimerEnabled()) {
+
+        connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
+        timer->start(1000);
+        // Draw a rectangle with a text for the current second - every second for 4 seconds, then call processClick on the 5th second while supplying the center of the image
+    } else {
+        trackingModule->stopTracking();
+    }
+}
+
+void CameraMouseController::resetCountdown() {
+
+        qDebug() << (time->second());
+
+        if (time->second() > 1) {
+            *time = time->addSecs(-1);
+        } else {
+            timer->stop();
+
+            timer = new QTimer();
+            time = new QTime(0,0,5,0);
+
+            int width = (int) (prevFrame.size().width);
+            int height = (int) (prevFrame.size().height);
+            Point center = Point(width/2, height/2);
+            processClick(center);
+
+            if (settings.isAutoResetTimerEnabled() && !autoResetTimer->isActive()) {
+                autoResetTimer->start(autoResetInterval);
+            }
+        }
+}
+
+
+
+void CameraMouseController::drawCountdown() {
+
+    float ratio = 0.03;
+
+    int width = (int) (prevFrame.size().width);
+    int height = (int) (prevFrame.size().height);
+    Point center = Point(width/2, height/2);
+
+    cv::Rect rectangle(center.X() - ((width*ratio)/2), center.Y() - ((height*ratio)/2), (width*ratio), (height*ratio));
+    ImageProcessing::drawWhiteRectangle(prevFrame, rectangle);
+}
+
+void CameraMouseController::drawSecondsText() {
+    std::string sec = std::to_string(time->second());
+
+    int width = (int) (prevFrame.size().width);
+    int height = (int) (prevFrame.size().height);
+
+    ImageProcessing::drawTimerSecond(prevFrame, sec, Point((width/2)-15, (height/2)-40));
+}
+
+void CameraMouseController::resetInterval(int interval) {
+    autoResetInterval = interval;
+    autoResetTimer = new QTimer();
+    autoResetTime = new QTime(0,0,interval/1000,0);
+    connect(autoResetTimer, SIGNAL(timeout()), this, SLOT(startAutoResetInterval()));
+
+    autoResetTimer->start(interval);
+}
+
+void CameraMouseController::startAutoResetInterval() {
+      trackingModule->stopTracking();
+      if (autoResetTimer->isActive()) {
+          autoResetTimer->stop();
+      }
+      connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
+      timer->start(1000);
+
+}
+
 
 } // namespace CMS
 

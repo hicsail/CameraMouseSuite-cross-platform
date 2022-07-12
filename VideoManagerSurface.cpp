@@ -55,19 +55,23 @@ QList<QVideoFrame::PixelFormat> VideoManagerSurface::supportedPixelFormats(QAbst
     }
 }
 
-bool VideoManagerSurface::present(const QVideoFrame &frame)
+bool VideoManagerSurface::present(const QVideoFrame &frame) 
 {
+
     if (!supportedFormats.contains(frame.pixelFormat()))
     {
+        qDebug() << "if statement";
         setError(IncorrectFormatError);
         return false;
     }
     else
     {
+
         QVideoFrame frameToProcess(frame);
 
         if(!frameToProcess.map(QAbstractVideoBuffer::ReadWrite))
         {
+
            setError(ResourceError);
            return false;
         }
@@ -89,6 +93,7 @@ bool VideoManagerSurface::present(const QVideoFrame &frame)
         #endif
         cv::Mat mat = ASM::QImageToCvMat(image);
 
+        //qDebug() << "calling processFrame";
         controller->processFrame(mat);
 
         image = ASM::cvMatToQImage(mat);
@@ -125,5 +130,26 @@ void VideoManagerSurface::mousePressEvent(QMouseEvent *event)
     controller->processClick(Point(x, y));
 }
 
-} // namespace CMS
+
+
+void VideoManagerSurface::drawCountdownRectangle(std::string second) {
+    controller->drawCountdown();
+    controller->drawSecondsText();
+}
+
+void VideoManagerSurface::keyPress() {
+    qDebug() << "F5 pressed in VideoManagerSurface";
+    controller->keyPress();
+}
+
+void VideoManagerSurface::triggerResetInterval(int interval) {
+    controller->resetInterval(interval);
+}
+
+void VideoManagerSurface::stopTracking() {
+    controller->keyPress();
+}
+}
+
+ // namespace CMS
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>969</width>
-    <height>603</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,6 +26,12 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -37,15 +43,15 @@
         <item>
          <widget class="CMS::ClickableLabel" name="frameLabel">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>2</horstretch>
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
             <width>700</width>
-            <height>0</height>
+            <height>447</height>
            </size>
           </property>
           <property name="text">
@@ -58,8 +64,18 @@
         </item>
         <item>
          <widget class="QPushButton" name="resetButton">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
            <string>Reset</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="stopTrackingButton">
+          <property name="text">
+           <string>Stop tracking</string>
           </property>
          </widget>
         </item>
@@ -72,7 +88,7 @@
        <widget class="QTabWidget" name="tabWidget_2">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>30</x>
           <y>0</y>
           <width>651</width>
           <height>491</height>
@@ -113,7 +129,7 @@
            <bool>true</bool>
           </property>
           <property name="title">
-           <string>Settings</string>
+           <string/>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
@@ -539,7 +555,7 @@
              <item>
               <widget class="QLineEdit" name="resetTime">
                <property name="text">
-                <string>3</string>
+                <string>10</string>
                </property>
               </widget>
              </item>
@@ -547,12 +563,12 @@
               <widget class="QComboBox" name="resetTimeUnit">
                <item>
                 <property name="text">
-                 <string>minutes</string>
+                 <string>seconds</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>seconds</string>
+                 <string>minutes</string>
                 </property>
                </item>
               </widget>
@@ -567,9 +583,16 @@
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="resetCheckLoss">
+            <widget class="QCheckBox" name="trackpointLossCheck">
              <property name="text">
               <string>Run the 5-4-3-2-1 routine on loss of trackpoint</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="placeResetButton">
+             <property name="text">
+              <string>Place the 5-4-3-2-1 button on the primary page</string>
              </property>
             </widget>
            </item>
@@ -614,7 +637,7 @@
      <x>0</x>
      <y>0</y>
      <width>969</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDevices">

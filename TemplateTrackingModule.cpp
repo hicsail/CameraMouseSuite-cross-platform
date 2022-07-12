@@ -61,6 +61,7 @@ Point TemplateTrackingModule::track(cv::Mat &frame)
 
     // Return center of matched region
     prevLoc = Point(matchLoc.x + fullTemplateSize.width/2, matchLoc.y + fullTemplateSize.height/2);
+
     return prevLoc;
 }
 
@@ -73,6 +74,7 @@ void TemplateTrackingModule::setTrackPoint(cv::Mat &frame, Point point)
     if (point.X() < 0 || point.X() >= fullImageSize.width ||
         point.Y() < 0 || point.Y() >= fullImageSize.height)
     {
+
         return;
     }
 
@@ -93,6 +95,11 @@ void TemplateTrackingModule::setTrackPoint(cv::Mat &frame, Point point)
 
     prevLoc = point;
     initialized = true;
+}
+
+void TemplateTrackingModule::stopTracking()
+{
+    initialized = false;
 }
 
 void TemplateTrackingModule::drawOnFrame(cv::Mat &frame, Point point)

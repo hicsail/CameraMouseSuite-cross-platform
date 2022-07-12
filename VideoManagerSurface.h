@@ -44,9 +44,19 @@ public:
     ~VideoManagerSurface();
     QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType handleType) const;
     bool present(const QVideoFrame &frame);
+    void drawCountdownRectangle(std::string second);
+
+    bool present(const QVideoFrame &frame, const int num);
+
+    void keyPress();
+
+    void triggerResetInterval(int interval);
+
+    void stopTracking();
 
 protected slots:
     void mousePressEvent(QMouseEvent *event);
+
 
 private:
     Settings &settings;

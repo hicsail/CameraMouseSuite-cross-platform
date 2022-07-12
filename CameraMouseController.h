@@ -23,14 +23,20 @@
 
 #include "FeatureInitializationModule.h"
 #include "TrackingModule.h"
+#include "TemplateTrackingModule.h"
 #include "MouseControlModule.h"
 #include "Point.h"
 #include "Settings.h"
+#include "qtimer.h"
+#include <QKeyEvent>
 
 namespace CMS {
 
-class CameraMouseController
+class CameraMouseController : public QObject
 {
+
+    Q_OBJECT
+
 public:
     CameraMouseController(Settings &settings, ITrackingModule *trackingModule, MouseControlModule *controlModule);
     ~CameraMouseController();
@@ -38,11 +44,33 @@ public:
     void processClick(Point position);
     bool isAutoDetectWorking();
 
+    void drawCountdown();
+    void drawSecondsText();
+
+    // For the 5-4-3-2-1 countdown
+    QTimer *timer = new QTimer();
+    QTime *time = new QTime(0,0,5,0);
+
+    // For the Auto Reset Interval
+    QTimer *autoResetTimer = new QTimer();
+    QTime *autoResetTime = new QTime(0,0,0,0);
+
+    int autoResetInterval;
+
+    void keyPress();
+
+    void resetInterval(int interval);
+;
+private slots:
+    void resetCountdown();
+    void startAutoResetInterval();
+
 private:
     Settings &settings;
     FeatureInitializationModule initializationModule;
     ITrackingModule *trackingModule;
     MouseControlModule *controlModule;
+
     cv::Mat prevFrame;
     QTime featureCheckTimer;
 };

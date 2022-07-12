@@ -33,6 +33,8 @@ public:
     virtual void drawOnFrame(cv::Mat &frame, Point point);
     virtual cv::Size getImageSize() = 0;
     virtual bool isInitialized() = 0;
+
+    virtual void stopTracking() = 0;
 };
 
 class TrackingModuleSanityCheck

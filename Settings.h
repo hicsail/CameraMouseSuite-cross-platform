@@ -39,8 +39,11 @@ public:
     double getResetFeatureDistThreshSq();
     Point getFrameSize();
     bool isAutoDetectNoseEnabled();
+    bool isResetOnF5Enabled();
 
-signals:
+
+
+
 
 public slots:
     void setEnableClicking(bool enableClicking);
@@ -55,6 +58,17 @@ public slots:
     void setFrameSize(Point frameSize);
     void setAutoDetectNose(bool autoDetectNose);
 
+    void setResetOnF5(bool state);
+
+    bool isShowResetButtonEnabled();
+    void setShowResetButton(bool state);
+
+    bool isAutoResetTimerEnabled();
+    void setAutoResetTimer(bool state);
+
+    void setTrackPointLossReset(bool state);
+    bool isTrackPointLossResetEnabled();
+
 private:
     bool enableClicking;
     double dwellTime;
@@ -67,6 +81,10 @@ private:
     double damping;
     Point frameSize;
     bool autoDetectNose;
+    bool resetOnF5;
+    bool showResetButton;
+    bool autoResetTimerEnabled;
+    bool trackpointLossEnabled;
 };
 
 } // namespace CMS

@@ -21,12 +21,23 @@
 #endif
 
 #include "ImageProcessing.h"
+#include "Point.h"
 
 namespace CMS {
 
 void ImageProcessing::drawGreenRectangle(cv::Mat &image, cv::Rect &rectangle)
 {
-    cv::rectangle(image, rectangle, cv::Scalar(50, 205, 50), 2);
+    cv::rectangle(image, rectangle, cv::Scalar(50, 205, 50), 3);
+}
+
+void ImageProcessing::drawWhiteRectangle(cv::Mat &image, cv::Rect &rectangle)
+{
+    cv::rectangle(image, rectangle, cv::Scalar(255,255,255), 8);
+}
+
+void ImageProcessing::drawTimerSecond(cv::Mat &image, cv::String text, Point point)
+{
+    cv::putText(image, text, point.asCVIntPoint(), cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(255,255,255), cv::LINE_4);
 }
 
 } // namespace CMS

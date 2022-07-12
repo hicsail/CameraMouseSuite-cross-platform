@@ -35,6 +35,8 @@ public:
     cv::Size getImageSize();
     bool isInitialized();
 
+    void stopTracking();
+
 private:
     TrackingModuleSanityCheck sanityCheck;
     bool initialized;

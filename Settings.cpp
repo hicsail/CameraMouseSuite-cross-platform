@@ -17,7 +17,7 @@
 
 #include "Settings.h"
 #include "Monitor.h"
-
+#include <QDebug>
 namespace CMS {
 
 Settings::Settings(QObject *parent) :
@@ -26,7 +26,11 @@ Settings::Settings(QObject *parent) :
     radiusRel(0.05),
     screenResolution(MonitorFactory::newMonitor()->getResolution()),
     reverseHorizontal(false),
-    autoDetectNose(true)
+    autoDetectNose(false),
+    resetOnF5(false),
+    showResetButton(false),
+    autoResetTimerEnabled(false),
+    trackpointLossEnabled(false)
 {
 }
 
@@ -133,6 +137,39 @@ void Settings::setFrameSize(Point frameSize)
 void Settings::setAutoDetectNose(bool autoDetectNose)
 {
     this->autoDetectNose = autoDetectNose;
+}
+
+bool Settings::isResetOnF5Enabled() {
+   return this->resetOnF5;
+}
+
+void Settings::setResetOnF5(bool state) {
+    qDebug() << state;
+    this->resetOnF5 = state;
+}
+
+bool Settings::isShowResetButtonEnabled() {
+    return this->showResetButton;
+}
+
+void Settings::setShowResetButton(bool state) {
+    this->showResetButton = state;
+}
+
+void Settings::setAutoResetTimer(bool state) {
+    this->autoResetTimerEnabled = state;
+}
+
+bool Settings::isAutoResetTimerEnabled() {
+    return this->autoResetTimerEnabled;
+}
+
+bool Settings::isTrackPointLossResetEnabled() {
+    return trackpointLossEnabled;
+}
+
+void Settings::setTrackPointLossReset(bool state) {
+    this->trackpointLossEnabled=state;
 }
 
 } // namespace CMS

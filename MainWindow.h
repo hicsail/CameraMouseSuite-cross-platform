@@ -21,6 +21,9 @@
 #include <QMainWindow>
 #include <QCamera>
 #include <QAbstractVideoSurface>
+#include <QTime>
+
+#include "VideoManagerSurface.h"
 
 #include "Settings.h"
 
@@ -38,6 +41,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     int num = 0;
+    QTimer *timer;
+    QTime *time;
 
 private slots:
     void updateSelectedCamera(QAction *action);
@@ -50,18 +55,26 @@ private slots:
     void lockGainClicked(bool lock);
     void on_resetButton_clicked();
     void updateResetButton();
-    void on_resetCheckTime_stateChanged(int arg1);
+
+    void resetCountdown();
+
+    void toggleResetButton(bool state);
+
+    void enableResetInterval(bool state);
+
+    void on_stopTrackingButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     QCamera *camera;
-    QAbstractVideoSurface *videoManagerSurface;
+    VideoManagerSurface *videoManagerSurface;
     Settings settings;
 
     void setupCameraWidgets();
     void setupSettingsWidgets();
-    //void resizeEvent(QResizeEvent* event) override;
+
     void keyPressEvent(QKeyEvent *event);
+
 };
 
 } // namespace CMS

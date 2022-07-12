@@ -26,6 +26,7 @@
 #include "CameraMouseController.h"
 #include "TemplateTrackingModule.h"
 #include "MouseControlModule.h"
+#include "ImageProcessing.h"
 
 
 Q_DECLARE_METATYPE(QCameraInfo)
@@ -118,6 +119,23 @@ void MainWindow::setupSettingsWidgets()
     // Auto Detect Nose
     connect(ui->autoDetectNoseCheckBox, SIGNAL(toggled(bool)), &settings, SLOT(setAutoDetectNose(bool)));
     ui->autoDetectNoseCheckBox->setChecked(settings.isAutoDetectNoseEnabled());
+
+    // Reset on F5
+    connect(ui->resetCheckF5, SIGNAL(toggled(bool)), &settings, SLOT(setResetOnF5(bool)));
+
+    // Reset button under the camera
+    connect(ui->placeResetButton, SIGNAL(toggled(bool)), this, SLOT(toggleResetButton(bool)));
+    connect(ui->placeResetButton, SIGNAL(toggled(bool)), &settings, SLOT(setShowResetButton(bool)));
+    ui->resetButton->setVisible(false);
+
+    // Auto reset interval
+    connect(ui->resetCheckTime, SIGNAL(toggled(bool)), this, SLOT(enableResetInterval(bool)));
+    connect(ui->resetCheckTime, SIGNAL(toggled(bool)), &settings, SLOT(setAutoResetTimer(bool)));
+
+    // Auto reset on trackpoint loss
+    connect(ui->trackpointLossCheck, SIGNAL(toggled(bool)), &settings, SLOT(setTrackPointLossReset(bool state)));
+
+
 }
 
 void MainWindow::updateSelectedCamera(QAction *action)
@@ -176,49 +194,68 @@ void MainWindow::lockGainClicked(bool lock)
         ui->verticalGainSlider->setValue(ui->horizontalGainSlider->value());
 }
 
+void MainWindow::toggleResetButton(bool state) {
+    ui->resetButton->setVisible(state);
+}
 
 void MainWindow::on_resetButton_clicked()
 {
-    //QTimer *timer =  new QTimer(this);
-    //connect(timer, SIGNAL(timeout()), this, SLOT(updateResetButton()));
-    //timer->start(5000);
-
-    // QTimer::singleShot(5000,this,SLOT(updateResetButton()));
-    updateResetButton();
+   videoManagerSurface->keyPress();
 }
 
 
 void MainWindow::updateResetButton()
 {
-    /* Below code is just for testing of the signal-slot connection and the timer */
+    /* Below code is just for testing of the signal-slot connection and the timer
     QString resetTime = ui->resetTime->text();
     QString resetUnit = ui->resetTimeUnit->currentText();
-    ui->resetButton->setText("5-4-3-2-1 choices: " + resetTime + " " + resetUnit);
-
-    // Just call CameraMouseController::processClick() and supply the middle of the frame?
+    ui->resetButton->setText("5-4-3-2-1 choices: " + resetTime + " " + resetUnit); */
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_F5) {
         if  (ui->resetCheckF5->isChecked()) {
-            // Call processClick and supply the center of the image
+            qDebug() << "F5 pressed on MainWindow";
+            videoManagerSurface->keyPress();
+            // Draw a rectangle with a text for the current second - every second for 4 seconds, then call processClick on the 5th second while supplying the center of the image
         }
 
     }
 }
 
+void MainWindow::resetCountdown() {
+        qDebug() << (time->second());
 
-void MainWindow::on_resetCheckTime_stateChanged(int arg1)
-{
-    if (arg1 > 0) {
-            QTimer *timer = new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(updateResetButton()));
-            timer->start(2000);
-    }
+        if (time->second() > 0) {
+            ui->resetButton->setText(QString::number(time->second()));
+            videoManagerSurface->drawCountdownRectangle( std::to_string( time->second() ) );
+            *time = time->addSecs(-1);
+        } else {
+            timer->stop();
+        }
+}
+
+void MainWindow::enableResetInterval(bool state) {
+        int time = (ui->resetTime->text()).toInt();
+        QString unit = (ui->resetTimeUnit->currentText());
+
+        int resetInterval;
+
+        if (unit=="seconds") {
+           resetInterval = time * 1000;
+
+        } else {
+           resetInterval = time * 60 * 1000;
+        }
+        qDebug() << "Reset interval is " << resetInterval << " ms";
+        videoManagerSurface->triggerResetInterval(resetInterval);
 }
 
 
-
+void MainWindow::on_stopTrackingButton_clicked()
+{
+  videoManagerSurface->stopTracking();
+}
 
 }
 
