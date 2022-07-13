@@ -33,7 +33,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -69,13 +69,6 @@
           </property>
           <property name="text">
            <string>Reset</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="stopTrackingButton">
-          <property name="text">
-           <string>Stop tracking</string>
           </property>
          </widget>
         </item>

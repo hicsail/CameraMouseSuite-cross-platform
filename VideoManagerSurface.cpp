@@ -132,23 +132,14 @@ void VideoManagerSurface::mousePressEvent(QMouseEvent *event)
 
 
 
-void VideoManagerSurface::drawCountdownRectangle(std::string second) {
-    controller->drawCountdown();
-    controller->drawSecondsText();
-}
-
-void VideoManagerSurface::keyPress() {
-    qDebug() << "F5 pressed in VideoManagerSurface";
-    controller->keyPress();
+void VideoManagerSurface::F5Event() {
+    controller->startReset();
 }
 
 void VideoManagerSurface::triggerResetInterval(int interval) {
     controller->resetInterval(interval);
 }
 
-void VideoManagerSurface::stopTracking() {
-    controller->keyPress();
-}
 }
 
  // namespace CMS

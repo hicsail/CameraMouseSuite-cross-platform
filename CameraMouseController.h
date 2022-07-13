@@ -56,14 +56,11 @@ public:
     QTime *autoResetTime = new QTime(0,0,0,0);
 
     int autoResetInterval;
-
-    void keyPress();
-
     void resetInterval(int interval);
 ;
-private slots:
+public slots:
+    void startReset();
     void resetCountdown();
-    void startAutoResetInterval();
 
 private:
     Settings &settings;

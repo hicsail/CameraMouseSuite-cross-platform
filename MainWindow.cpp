@@ -200,23 +200,15 @@ void MainWindow::toggleResetButton(bool state) {
 
 void MainWindow::on_resetButton_clicked()
 {
-   videoManagerSurface->keyPress();
+   videoManagerSurface->F5Event();
 }
 
-
-void MainWindow::updateResetButton()
-{
-    /* Below code is just for testing of the signal-slot connection and the timer
-    QString resetTime = ui->resetTime->text();
-    QString resetUnit = ui->resetTimeUnit->currentText();
-    ui->resetButton->setText("5-4-3-2-1 choices: " + resetTime + " " + resetUnit); */
-}
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_F5) {
         if  (ui->resetCheckF5->isChecked()) {
-            qDebug() << "F5 pressed on MainWindow";
-            videoManagerSurface->keyPress();
+
+            videoManagerSurface->F5Event();
             // Draw a rectangle with a text for the current second - every second for 4 seconds, then call processClick on the 5th second while supplying the center of the image
         }
 
@@ -224,11 +216,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::resetCountdown() {
-        qDebug() << (time->second());
 
         if (time->second() > 0) {
             ui->resetButton->setText(QString::number(time->second()));
-            videoManagerSurface->drawCountdownRectangle( std::to_string( time->second() ) );
             *time = time->addSecs(-1);
         } else {
             timer->stop();
@@ -251,11 +241,6 @@ void MainWindow::enableResetInterval(bool state) {
         videoManagerSurface->triggerResetInterval(resetInterval);
 }
 
-
-void MainWindow::on_stopTrackingButton_clicked()
-{
-  videoManagerSurface->stopTracking();
-}
 
 }
 

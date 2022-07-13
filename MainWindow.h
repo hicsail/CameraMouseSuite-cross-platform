@@ -54,15 +54,12 @@ private slots:
     void verticalGainChanged(int verticalGain);
     void lockGainClicked(bool lock);
     void on_resetButton_clicked();
-    void updateResetButton();
 
     void resetCountdown();
 
     void toggleResetButton(bool state);
 
     void enableResetInterval(bool state);
-
-    void on_stopTrackingButton_clicked();
 
 private:
     Ui::MainWindow *ui;

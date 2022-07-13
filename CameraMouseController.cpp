@@ -65,7 +65,7 @@ void CameraMouseController::processFrame(cv::Mat &frame)
                     featureCheckTimer.restart();
                 }
             } else if (featurePosition.X() >= 1828 || featurePosition.X() <= 90) { // Track point is too far to the left or the right. Chosen X coordinates are arbitrary
-                startAutoResetInterval();
+                startReset();
             }
 
             trackingModule->drawOnFrame(frame, featurePosition);
@@ -106,18 +106,21 @@ bool CameraMouseController::isAutoDetectWorking()
 }
 
 
-void CameraMouseController::keyPress() {
-    if  (settings.isResetOnF5Enabled() || settings.isShowResetButtonEnabled() || settings.isAutoResetTimerEnabled()) {
+void CameraMouseController::startReset() {
+    trackingModule->stopTracking();
+    if (autoResetTimer->isActive()) {
+        autoResetTimer->stop();
+    }
+
+    if  (settings.isResetOnF5Enabled() || settings.isShowResetButtonEnabled() || settings.isAutoResetTimerEnabled() || settings.isTrackPointLossResetEnabled()) {
 
         connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
         timer->start(1000);
         // Draw a rectangle with a text for the current second - every second for 4 seconds, then call processClick on the 5th second while supplying the center of the image
-    } else {
-        trackingModule->stopTracking();
     }
 }
 
-void CameraMouseController::resetCountdown() {
+void CameraMouseController::resetCountdown() { // For decrementing the seconds
 
         if (time->second() > 1) {
             *time = time->addSecs(-1);
@@ -140,7 +143,7 @@ void CameraMouseController::resetCountdown() {
 
 
 
-void CameraMouseController::drawCountdown() {
+void CameraMouseController::drawCountdown() { // Draws white rectangle in the middle of the frame
 
     float ratio = 0.03;
 
@@ -152,36 +155,22 @@ void CameraMouseController::drawCountdown() {
     ImageProcessing::drawWhiteRectangle(prevFrame, rectangle);
 }
 
-void CameraMouseController::drawSecondsText() {
+void CameraMouseController::drawSecondsText() { // Draws the current second of the countdown above the center of the frame
     std::string sec = std::to_string(time->second());
 
     int width = (int) (prevFrame.size().width);
     int height = (int) (prevFrame.size().height);
 
-    ImageProcessing::drawTimerSecond(prevFrame, sec, Point((width/2)-15, (height/2)-40));
+    ImageProcessing::drawTimerSecond(prevFrame, sec, Point((width/2)-20, (height/2)-40));
 }
 
-void CameraMouseController::resetInterval(int interval) {
+void CameraMouseController::resetInterval(int interval) { // Starts the auto reset interval
     autoResetInterval = interval;
     autoResetTimer = new QTimer();
-    autoResetTime = new QTime(0,0,interval/1000,0);
-    connect(autoResetTimer, SIGNAL(timeout()), this, SLOT(startAutoResetInterval()));
+    connect(autoResetTimer, SIGNAL(timeout()), this, SLOT(startReset()));
 
     autoResetTimer->start(interval);
 }
-
-void CameraMouseController::startAutoResetInterval() {
-      trackingModule->stopTracking();
-      connect(timer, SIGNAL(timeout()), this, SLOT(resetCountdown()));
-      timer->start(1000);
-
-      if (autoResetTimer->isActive()) {
-          autoResetTimer->stop();
-      }
-
-
-}
-
 
 } // namespace CMS
 
