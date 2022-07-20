@@ -59,7 +59,7 @@ win32 {
         message(Debug configuration!)
     }
     CONFIG(release, debug|release) {
-        LIBS += -L$$(OPENCV_DIR)/lib/*.lib \
+        LIBS += $$(OPENCV_DIR)/lib/*.lib \
                -luser32
         message(Release configuration!)
     }
